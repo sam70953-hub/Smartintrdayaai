@@ -1,0 +1,39 @@
+name: Build Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'SmartIntradayAI_Android_Studio_Project.zip'
+      - '.github/workflows/build-apk.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Gradle 8.9
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+
+      - name: Extract Android project
+        run: unzip -q SmartIntradayAI_Android_Studio_Project.zip -d extracted
+
+      - name: Build debug APK
+        run: gradle -p extracted/SmartIntradayAI_Android assembleDebug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: SmartIntradayAI-debug-apk
+          path: extracted/SmartIntradayAI_Android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
