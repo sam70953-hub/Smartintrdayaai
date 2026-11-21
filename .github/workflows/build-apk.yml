@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - 'SmartIntradayAI_Android_Studio_Project.zip'
+      - - 'SmartIntradayAI_Android_Studio_Project (2).zip'
       - '.github/workflows/build-apk.yml'
 
 jobs:
@@ -26,8 +26,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract Android project
-        run: unzip -q SmartIntradayAI_Android_Studio_Project.zip -d extracted
-
+        run: unzip -q "SmartIntradayAI_Android_Studio_Project (2).zip" -d extracted
       - name: Build debug APK
         run: gradle -p extracted/SmartIntradayAI_Android assembleDebug
 
